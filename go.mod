@@ -1,4 +1,4 @@
-module github.com/lionpay/account
+module github.com/lionpay/proto
 
 go 1.20
 
