@@ -1,0 +1,27 @@
+syntax = "proto3";
+option go_package = "./;account";
+package account;
+
+
+message LoginRequest {
+  string username = 1;
+  string password = 2;
+  string code = 3;
+}
+
+message LoginResponse {
+  string msg = 1;
+  int64 code = 2;
+}
+
+message Register {
+  string username = 1;
+  string password = 2;
+  string code = 3;
+  int64 phone = 4;
+}
+
+service user {
+  rpc Login(LoginRequest) returns (LoginResponse);
+  rpc Register(LoginRequest) returns (LoginResponse);
+}
