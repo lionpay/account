@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.3.0
 // - protoc             v4.24.2
-// source: account.proto
+// source: account/account.proto
 
 package account
 
@@ -19,128 +19,91 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	User_Login_FullMethodName    = "/account.user/Login"
-	User_Register_FullMethodName = "/account.user/Register"
+	AccountServer_FundPayment_FullMethodName = "/account.AccountServer/FundPayment"
 )
 
-// UserClient is the client API for User service.
+// AccountServerClient is the client API for AccountServer service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
-type UserClient interface {
-	Login(ctx context.Context, in *LoginRequest, opts ...grpc.CallOption) (*LoginResponse, error)
-	Register(ctx context.Context, in *LoginRequest, opts ...grpc.CallOption) (*LoginResponse, error)
+type AccountServerClient interface {
+	FundPayment(ctx context.Context, in *FundPaymentRequest, opts ...grpc.CallOption) (*JsonResponse, error)
 }
 
-type userClient struct {
+type accountServerClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewUserClient(cc grpc.ClientConnInterface) UserClient {
-	return &userClient{cc}
+func NewAccountServerClient(cc grpc.ClientConnInterface) AccountServerClient {
+	return &accountServerClient{cc}
 }
 
-func (c *userClient) Login(ctx context.Context, in *LoginRequest, opts ...grpc.CallOption) (*LoginResponse, error) {
-	out := new(LoginResponse)
-	err := c.cc.Invoke(ctx, User_Login_FullMethodName, in, out, opts...)
+func (c *accountServerClient) FundPayment(ctx context.Context, in *FundPaymentRequest, opts ...grpc.CallOption) (*JsonResponse, error) {
+	out := new(JsonResponse)
+	err := c.cc.Invoke(ctx, AccountServer_FundPayment_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *userClient) Register(ctx context.Context, in *LoginRequest, opts ...grpc.CallOption) (*LoginResponse, error) {
-	out := new(LoginResponse)
-	err := c.cc.Invoke(ctx, User_Register_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-// UserServer is the server API for User service.
-// All implementations must embed UnimplementedUserServer
+// AccountServerServer is the server API for AccountServer service.
+// All implementations must embed UnimplementedAccountServerServer
 // for forward compatibility
-type UserServer interface {
-	Login(context.Context, *LoginRequest) (*LoginResponse, error)
-	Register(context.Context, *LoginRequest) (*LoginResponse, error)
-	mustEmbedUnimplementedUserServer()
+type AccountServerServer interface {
+	FundPayment(context.Context, *FundPaymentRequest) (*JsonResponse, error)
+	mustEmbedUnimplementedAccountServerServer()
 }
 
-// UnimplementedUserServer must be embedded to have forward compatible implementations.
-type UnimplementedUserServer struct {
+// UnimplementedAccountServerServer must be embedded to have forward compatible implementations.
+type UnimplementedAccountServerServer struct {
 }
 
-func (UnimplementedUserServer) Login(context.Context, *LoginRequest) (*LoginResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Login not implemented")
+func (UnimplementedAccountServerServer) FundPayment(context.Context, *FundPaymentRequest) (*JsonResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method FundPayment not implemented")
 }
-func (UnimplementedUserServer) Register(context.Context, *LoginRequest) (*LoginResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Register not implemented")
-}
-func (UnimplementedUserServer) mustEmbedUnimplementedUserServer() {}
+func (UnimplementedAccountServerServer) mustEmbedUnimplementedAccountServerServer() {}
 
-// UnsafeUserServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to UserServer will
+// UnsafeAccountServerServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to AccountServerServer will
 // result in compilation errors.
-type UnsafeUserServer interface {
-	mustEmbedUnimplementedUserServer()
+type UnsafeAccountServerServer interface {
+	mustEmbedUnimplementedAccountServerServer()
 }
 
-func RegisterUserServer(s grpc.ServiceRegistrar, srv UserServer) {
-	s.RegisterService(&User_ServiceDesc, srv)
+func RegisterAccountServerServer(s grpc.ServiceRegistrar, srv AccountServerServer) {
+	s.RegisterService(&AccountServer_ServiceDesc, srv)
 }
 
-func _User_Login_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(LoginRequest)
+func _AccountServer_FundPayment_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(FundPaymentRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(UserServer).Login(ctx, in)
+		return srv.(AccountServerServer).FundPayment(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: User_Login_FullMethodName,
+		FullMethod: AccountServer_FundPayment_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserServer).Login(ctx, req.(*LoginRequest))
+		return srv.(AccountServerServer).FundPayment(ctx, req.(*FundPaymentRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _User_Register_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(LoginRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(UserServer).Register(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: User_Register_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserServer).Register(ctx, req.(*LoginRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-// User_ServiceDesc is the grpc.ServiceDesc for User service.
+// AccountServer_ServiceDesc is the grpc.ServiceDesc for AccountServer service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var User_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "account.user",
-	HandlerType: (*UserServer)(nil),
+var AccountServer_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "account.AccountServer",
+	HandlerType: (*AccountServerServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "Login",
-			Handler:    _User_Login_Handler,
-		},
-		{
-			MethodName: "Register",
-			Handler:    _User_Register_Handler,
+			MethodName: "FundPayment",
+			Handler:    _AccountServer_FundPayment_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "account.proto",
+	Metadata: "account/account.proto",
 }

@@ -2,26 +2,19 @@ syntax = "proto3";
 option go_package = "./;account";
 package account;
 
-
-message LoginRequest {
-  string username = 1;
-  string password = 2;
-  string code = 3;
+//账户请求定义
+message FundPaymentRequest {
+  string order_no = 1; //订单号
+  string merchant_id = 2; //商户id
+  string currency = 3; //币种
+}
+//返回结构体
+message JsonResponse {
+  string msg = 1; //返回消息
+  int64 code = 2; //业务码
 }
 
-message LoginResponse {
-  string msg = 1;
-  int64 code = 2;
-}
-
-message Register {
-  string username = 1;
-  string password = 2;
-  string code = 3;
-  int64 phone = 4;
-}
-
-service user {
-  rpc Login(LoginRequest) returns (LoginResponse);
-  rpc Register(LoginRequest) returns (LoginResponse);
+//账户服务接口
+service AccountServer {
+  rpc FundPayment(FundPaymentRequest) returns (JsonResponse);
 }
