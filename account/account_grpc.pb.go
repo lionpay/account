@@ -19,89 +19,89 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	AccountServer_FundPayment_FullMethodName = "/account.AccountServer/FundPayment"
+	Account_FundPayment_FullMethodName = "/account.Account/FundPayment"
 )
 
-// AccountServerClient is the client API for AccountServer service.
+// AccountClient is the client API for Account service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
-type AccountServerClient interface {
+type AccountClient interface {
 	FundPayment(ctx context.Context, in *FundPaymentRequest, opts ...grpc.CallOption) (*JsonResponse, error)
 }
 
-type accountServerClient struct {
+type accountClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewAccountServerClient(cc grpc.ClientConnInterface) AccountServerClient {
-	return &accountServerClient{cc}
+func NewAccountClient(cc grpc.ClientConnInterface) AccountClient {
+	return &accountClient{cc}
 }
 
-func (c *accountServerClient) FundPayment(ctx context.Context, in *FundPaymentRequest, opts ...grpc.CallOption) (*JsonResponse, error) {
+func (c *accountClient) FundPayment(ctx context.Context, in *FundPaymentRequest, opts ...grpc.CallOption) (*JsonResponse, error) {
 	out := new(JsonResponse)
-	err := c.cc.Invoke(ctx, AccountServer_FundPayment_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, Account_FundPayment_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// AccountServerServer is the server API for AccountServer service.
-// All implementations must embed UnimplementedAccountServerServer
+// AccountServer is the server API for Account service.
+// All implementations must embed UnimplementedAccountServer
 // for forward compatibility
-type AccountServerServer interface {
+type AccountServer interface {
 	FundPayment(context.Context, *FundPaymentRequest) (*JsonResponse, error)
-	mustEmbedUnimplementedAccountServerServer()
+	mustEmbedUnimplementedAccountServer()
 }
 
-// UnimplementedAccountServerServer must be embedded to have forward compatible implementations.
-type UnimplementedAccountServerServer struct {
+// UnimplementedAccountServer must be embedded to have forward compatible implementations.
+type UnimplementedAccountServer struct {
 }
 
-func (UnimplementedAccountServerServer) FundPayment(context.Context, *FundPaymentRequest) (*JsonResponse, error) {
+func (UnimplementedAccountServer) FundPayment(context.Context, *FundPaymentRequest) (*JsonResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method FundPayment not implemented")
 }
-func (UnimplementedAccountServerServer) mustEmbedUnimplementedAccountServerServer() {}
+func (UnimplementedAccountServer) mustEmbedUnimplementedAccountServer() {}
 
-// UnsafeAccountServerServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to AccountServerServer will
+// UnsafeAccountServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to AccountServer will
 // result in compilation errors.
-type UnsafeAccountServerServer interface {
-	mustEmbedUnimplementedAccountServerServer()
+type UnsafeAccountServer interface {
+	mustEmbedUnimplementedAccountServer()
 }
 
-func RegisterAccountServerServer(s grpc.ServiceRegistrar, srv AccountServerServer) {
-	s.RegisterService(&AccountServer_ServiceDesc, srv)
+func RegisterAccountServer(s grpc.ServiceRegistrar, srv AccountServer) {
+	s.RegisterService(&Account_ServiceDesc, srv)
 }
 
-func _AccountServer_FundPayment_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _Account_FundPayment_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(FundPaymentRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(AccountServerServer).FundPayment(ctx, in)
+		return srv.(AccountServer).FundPayment(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: AccountServer_FundPayment_FullMethodName,
+		FullMethod: Account_FundPayment_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AccountServerServer).FundPayment(ctx, req.(*FundPaymentRequest))
+		return srv.(AccountServer).FundPayment(ctx, req.(*FundPaymentRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-// AccountServer_ServiceDesc is the grpc.ServiceDesc for AccountServer service.
+// Account_ServiceDesc is the grpc.ServiceDesc for Account service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var AccountServer_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "account.AccountServer",
-	HandlerType: (*AccountServerServer)(nil),
+var Account_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "account.Account",
+	HandlerType: (*AccountServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
 			MethodName: "FundPayment",
-			Handler:    _AccountServer_FundPayment_Handler,
+			Handler:    _Account_FundPayment_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

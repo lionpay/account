@@ -15,6 +15,6 @@ message JsonResponse {
 }
 
 //账户服务接口
-service AccountServer {
+service Account {
   rpc FundPayment(FundPaymentRequest) returns (JsonResponse);
 }
